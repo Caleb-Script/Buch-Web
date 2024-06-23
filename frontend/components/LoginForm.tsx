@@ -1,0 +1,106 @@
+// src/components/Login.tsx
+"use client";
+import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { LoginDaten } from "../lib/interfaces";
+import { LoadingComponent } from "./LoadingComponent";
+import { ErrorBannerComponent } from "./ErrorBannerComponent";
+import { useRouter } from "next/navigation";
+import { getAuth } from "../api/auth";
+
+
+
+export default function LoginForm() {
+  const [loginDaten, setLoginDaten] = useState<LoginDaten>({
+    username: "",
+    password: "",
+  });
+
+  const [isInputValid, setIsInputValid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const router = useRouter();
+
+  useEffect(() => {
+    const validateInput = () => {
+      setIsInputValid(loginDaten.username !== "" && loginDaten.password !== "");
+    };
+    validateInput();
+  }, [loginDaten]);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    setError(undefined);
+
+    console.log(loginDaten);
+
+    try {
+      const { username, password } = loginDaten;
+      const token = await getAuth(username, password);
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", username);
+      console.log("Token: ", token);
+      router.push("/buecher")
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginDaten((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <>
+      <form className="p-3 w-50 bg-white border border-danger rounded shadow">
+        <h1 className="display-6 mb-3 text-dark">Login</h1>
+        <div className="form-floating mb-3 text-dark">
+          <input
+            type="email"
+            className="form-control"
+            id="floatingInput"
+            placeholder="name@example.com"
+            name="username"
+            value={loginDaten.username}
+            onChange={handleChange}
+          />
+          <label htmlFor="floatingInput">Username</label>
+        </div>
+        <div className="form-floating text-dark">
+          <input
+            type="password"
+            className="form-control"
+            id="floatingPassword"
+            placeholder="Password"
+            name="password"
+            value={loginDaten.password}
+            onChange={handleChange}
+          />
+          <label htmlFor="floatingPassword">Password</label>
+        </div>
+        {isLoading && (
+          <LoadingComponent
+            message={"Sie werden angemeldet. Haben Sie Geduld."}
+          />
+        )}
+        {error && <ErrorBannerComponent message={error} />}
+
+        <button
+          type="button"
+          className="btn btn-danger mt-3"
+          onClick={handleLogin}
+          disabled={!isInputValid || isLoading}
+        >
+          Sign in
+        </button>
+      </form>
+      {/* <button onClick={() => signIn("keycloak")}>Sign in with Keycloak</button> */}
+    </>
+  );
+}
