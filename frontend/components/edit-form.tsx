@@ -1,48 +1,87 @@
 "use client";
 
 import Link from "next/link";
-
-import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { BuchFormular } from "@/lib/formulare";
 import { BuchArtEnum, SchlagwortEnum } from "../lib/enum";
 import EnumButtons from "@/components/enumButtonGenerator";
 import { Form } from "react-bootstrap";
 import { updateBuch } from "../api/actions";
+import { useRouter } from "next/navigation.js";
+import { ErrorBannerComponent } from "./ErrorBannerComponent";
 
 export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
+  const [state, setState] = useState({ message: "", errors: {} });
   const token = localStorage.getItem("token");
-  const initialState = { message: "", errors: {} };
-  const updateBuchMitId = updateBuch.bind(null, buch.id, buch.version,token);
-  const [state, update] = useFormState(updateBuchMitId, initialState);
+  const router = useRouter();
+  const currentDate = new Date().toISOString().split("T")[0];
+  const [isValid, setValid] = useState(false);
+  const initialState = { errors: {}, message: "" };
+  const [response, setResponse] = useState<string>();
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const rabattNumber = parseFloat(buch.rabatt.replace("%", ""));
 
-  const handleSetValid = async (event: any) => {
+  const handleSetValid = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
 
+    setResponse(undefined);
+    setError(undefined);
+
     if (!form.checkValidity()) {
-      event.preventDefault();
       event.stopPropagation();
     } else {
       try {
-        const token = localStorage.getItem("token");
-        form.classList.add("was-validated");
-        await update(form);
-      } catch (err) {
-        console.error(err);
-        alert("Nicht Ordnung!");
+        const formData = new FormData(form);
+        const result = await updateBuch(
+          buch.id,
+          buch.version,
+          token,
+          state,
+          formData
+        );
+        if (result.message) {
+          setResponse(result.message);
+          setTimeout(() => {
+            router.push(`/buecher/${buch.id}`);
+            router.refresh();
+          }, 2000);
+        } else if (result.errors) {
+          setState((prevState) => ({
+            ...prevState,
+            errors: result.errors,
+          }));
+        }
+      } catch (error) {
+        setError((error as Error).message);
       }
     }
   };
 
+  useEffect(() => {
+    const form = document.getElementById("buchForm") as HTMLFormElement;
+    const handleFormChange = () => {
+      if (form && form.checkValidity()) {
+        setValid(true);
+      } else {
+        setValid(false);
+      }
+    };
+
+    form.addEventListener("change", handleFormChange);
+
+    return () => {
+      form.removeEventListener("change", handleFormChange);
+    };
+  }, []);
+
   return (
     <Form
-      action={update}
-      id="customerForm"
+      id="buchForm"
       className="pt-4 px-2"
       noValidate
-      validated={true}
       onSubmit={handleSetValid}
     >
       <div className="rounded bg-body-tertiary px-4 py-1 pt-4">
@@ -192,6 +231,16 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
           <Button type="submit">Speichern</Button>
         </div>
       </div>
+      {response ? (
+        <div className="alert alert-success" role="alert">
+          Buch: {response} wurde erfolgreich angelegt!
+        </div>
+      ) : null}
+      {error ? (
+        <div>
+          <ErrorBannerComponent message={error} />
+        </div>
+      ) : null}
     </Form>
   );
 }

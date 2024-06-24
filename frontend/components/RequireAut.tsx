@@ -9,7 +9,6 @@ export default function RequireAuth ({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token: ", token);
     if (!token) {
       router.replace("/"); // Redirect to login if token is not present
     }

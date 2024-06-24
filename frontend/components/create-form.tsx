@@ -4,29 +4,51 @@ import Link from "next/link";
 import { Button } from "@/components/button";
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import React from "react";
-import { useFormState } from "react-dom";
 import EnumButtons from "@/components/enumButtonGenerator";
 import { createBuch } from "../api/actions";
 import { BuchArtEnum, SchlagwortEnum } from "../lib/enum";
+import { ErrorBannerComponent } from "./ErrorBannerComponent";
+import { useRouter } from "next/navigation.js";
 
 export default function CreateBuchFormular() {
   const token = localStorage.getItem("token");
   const currentDate = new Date().toISOString().split("T")[0];
   const [isValid, setValid] = useState(false);
   const initialState = { errors: {}, message: "" };
-  const createBuchState = createBuch.bind(null, token);
-  const [state, create] = useFormState(createBuchState, initialState);
+  const [state, setState] = useState(initialState);
+  const [response, setResponse] = useState<string>();
+  const [error, setError] = useState<string | undefined>(undefined);
+  const router = useRouter();
 
-  const handleSetValid = async (event: any) => {
+  const handleSetValid = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const form = event.currentTarget;
 
+    setResponse(undefined);
+    setError(undefined);
+
     if (!form.checkValidity()) {
-      event.preventDefault();
       event.stopPropagation();
     } else {
       form.classList.add("was-validated");
-      create(form);
+      try {
+        const formData = new FormData(form);
+        const result = await createBuch(token, state, formData);
+        if (result.message) {
+          setResponse(result.message);
+          setTimeout(() => {
+            router.push("/buecher");
+            router.refresh();
+          }, 2000);
+        } else if (result.errors) {
+          setState((prevState) => ({
+            ...prevState,
+            errors: result.errors,
+          }));
+        }
+      } catch (error) {
+        setError((error as Error).message);
+      }
     }
   };
 
@@ -45,11 +67,10 @@ export default function CreateBuchFormular() {
     return () => {
       form.removeEventListener("change", handleFormChange);
     };
-  }, [isValid]);
+  }, []);
 
   return (
     <Form
-      action={create}
       id="buchForm"
       className="pt-4 px-2"
       noValidate
@@ -119,7 +140,6 @@ export default function CreateBuchFormular() {
           </div>
 
           <div className="row">
-            {/* Preis */}
             <div className="col form-floating">
               <input
                 type="number"
@@ -138,7 +158,6 @@ export default function CreateBuchFormular() {
               <div className="valid-feedback">passt!</div>
             </div>
 
-            {/* Rabatt */}
             <div className="col form-floating">
               <input
                 type="number"
@@ -158,7 +177,6 @@ export default function CreateBuchFormular() {
               <div className="valid-feedback">passt!</div>
             </div>
 
-            {/* Datum */}
             <div className="col-auto form-floating mb-3">
               <input
                 type="date"
@@ -180,7 +198,7 @@ export default function CreateBuchFormular() {
                 className="form-control"
                 name="homepage"
                 placeholder="Homepage"
-                pattern="/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/"
+                pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
                 required
               />
               <label htmlFor="homepage">Homepage</label>
@@ -191,7 +209,6 @@ export default function CreateBuchFormular() {
         </fieldset>
 
         <fieldset className="d-flex gap-5">
-          {/* Buchart */}
           <div className="mb-4 w-50">
             <select
               id="buchart"
@@ -219,7 +236,7 @@ export default function CreateBuchFormular() {
               className="btn-check"
               id="lieferbar"
               name="lieferbar"
-              value="false"
+              value="true"
               autoComplete="off"
             />
             <label className="btn btn-outline-danger" htmlFor="lieferbar">
@@ -242,7 +259,6 @@ export default function CreateBuchFormular() {
         </fieldset>
 
         <fieldset>
-          {/* Rating */}
           <label htmlFor="customRange2" className="form-label">
             Rating
           </label>
@@ -270,6 +286,16 @@ export default function CreateBuchFormular() {
           </Button>
         </div>
       </div>
+      {response ? (
+        <div className="alert alert-success" role="alert">
+          Buch: {response} wurde erfolgreich angelegt!
+        </div>
+      ) : null}
+      {error ? (
+        <div>
+          <ErrorBannerComponent message={error} />
+        </div>
+      ) : null}
     </Form>
   );
 }

@@ -3,18 +3,23 @@
 import Link from "next/link.js";
 import { deleteBuch } from "../../api/actions";
 import { useState } from "react";
+import { useRouter } from "next/navigation.js";
 
 export function DeleteBuchButton({ id }: { id: number }) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsDeleting(true);
 
     try {
-      await deleteBuch(id);
+      const token = localStorage.getItem("token");
+      await deleteBuch(id,token);
       console.log(`Buch mit ID ${id} erfolgreich gelöscht.`);
-      window.location.href = "/buecher"; // Weiterleitung per JavaScript
+      //window.location.href = "/buecher"; // Weiterleitung per JavaScript
+      router.push(`/buecher/`);
+      router.refresh()
     } catch (error) {
       console.error(`Fehler beim Löschen des Buchs mit ID ${id}:`, error);
         setIsDeleting(false);

@@ -6,7 +6,9 @@ import { Buch } from "@/lib/klassen";
 import { redirect } from "next/navigation";
 
 
-const client = new GraphQLClient("https://localhost:3000/graphql");
+const client = new GraphQLClient(
+  process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql"
+);
 
 export async function fetchBuchByIdFormular2(id: string) {
   noStore();

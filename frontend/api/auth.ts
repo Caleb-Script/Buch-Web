@@ -1,10 +1,11 @@
 import { gql, GraphQLClient } from "graphql-request";
+import { unstable_noStore as noStore } from "next/cache";
 import dotenv from "dotenv";
 
 dotenv.config();
-const backendServerURL =
-  process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql";
-const client = new GraphQLClient(backendServerURL);
+const client = new GraphQLClient(
+  process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql"
+);
 
 const AUTH = gql`
   mutation Login($username: String!, $password: String!) {
@@ -22,7 +23,7 @@ const REFRESH_TOKEN = gql`
   }`
 
 export async function getAuth(username: string, password: string) {
-
+noStore()
   try {
     const data = await client.request<{ login: { access_token: string } }>(
       AUTH,

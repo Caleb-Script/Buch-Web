@@ -1,13 +1,12 @@
 import { GraphQLClient } from "graphql-request";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { Buch } from "@/lib/klassen";
 import { Suchkriterien } from "../lib/suchkriterien";
 import { BUECHER_TABELLE } from "./query/query";
-import { useRouter } from "next/navigation.js";
 
-const backendServerURL =
-  process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql";
-const client = new GraphQLClient(backendServerURL);
+const client = new GraphQLClient(
+  process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql"
+);
 
 
   

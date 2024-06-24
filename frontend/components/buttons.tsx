@@ -8,16 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { EnumButtons } from "./filter-button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suchkriterium } from "@/lib/interfaces";
-import { BuchArtEnum, SchlagwortEnum } from "../lib/enum";
 import { deleteBuch } from "../api/actions";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { RatingButtons } from "./filter/number";
-import { BooleanButtons } from "./filter/boolean";
-import { TextInput } from "./filter/text";
+import { useRouter } from "next/navigation";
 //import { useDebouncedCallback } from "use-debounce";
 
 export function CreateBuecherButton() {
@@ -57,6 +49,7 @@ export function UpdateBuchButton({
 }
 
 export function DeleteBuchButton({ id }: { id: number }) {
+  const router = useRouter();
   const handleDelete = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -64,12 +57,13 @@ export function DeleteBuchButton({ id }: { id: number }) {
       try {
         const token = localStorage.getItem("token");
         const result = await deleteBuch(id, token);
-        console.log(result);
+        router.push(`/buecher/`)
+        router.refresh();
       } catch (error) {
         console.error("Fehler beim Löschen des Buches:", error);
       }
     },
-    [id]
+    [id,router]
   );
 
   return (
