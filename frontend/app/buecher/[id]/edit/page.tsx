@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '../../../../components/Breadcrumbs';
-import UpdateBuchFormular from '../../../../components/formulare/edit-form';
+import UpdateBuchFormular from '../../../../components/formulare/UpdateFormular';
 import { fetchBuchById } from '../../../../api/buch';
 
 

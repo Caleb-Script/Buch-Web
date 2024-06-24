@@ -1,9 +1,8 @@
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { GraphQLClient } from "graphql-request";
 import { DELETE_BUCH } from "../mutation/loeschen";
 
 
-export async function deleteActionBuch (id: number, token: string | null, client) {
+export async function deleteActionBuch (id: number, token: string | null, client: GraphQLClient) {
   try {
     client.setHeader("Authorization", `Bearer ${token}`);
     try {

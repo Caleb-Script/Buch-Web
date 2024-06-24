@@ -2,7 +2,7 @@
 
 import { Form } from "react-bootstrap";
 import Breadcrumbs from "../../../components/Breadcrumbs";
-import CreateCustomerFormular from "../../../components/formulare/create-form";
+import CreateCustomerFormular from "../../../components/formulare/CreateFormular";
 
 
 

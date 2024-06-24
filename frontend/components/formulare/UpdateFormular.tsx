@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "../button/button";
+import { Button } from "../Button";
 import { BuchFormular } from "@/lib/formulare";
 import { BuchArtEnum, SchlagwortEnum } from "../../lib/enum";
 import EnumButtons from "@/components/ButtonGenerator/enumButtonGenerator";

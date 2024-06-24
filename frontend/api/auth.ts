@@ -1,6 +1,7 @@
 import { gql, GraphQLClient } from "graphql-request";
 import { unstable_noStore as noStore } from "next/cache";
 import dotenv from "dotenv";
+import { extractErrorMessage } from "./actions";
 
 dotenv.config();
 const client = new GraphQLClient(
@@ -60,16 +61,17 @@ noStore()
 
     localStorage.setItem("token", data.login.access_token);
     return data.login.access_token;
-  } catch (error) {
-    console.error("Fehler beim Login:", error);
-
-    if (error instanceof Error) {
-      if (error.message === "fetch failed") {
-        throw new Error(`Netzwerkfehler: ${error.message}`);
-      }
-      throw new Error(`Fehler beim Login: ${error.message}`);
-    } else {
-      throw new Error("Unbekannter Fehler beim Login");
+  } catch (error: any) {
+    console.error("Fehler beim Ausführen der GraphQL-Anfrage:", error);
+    if (
+      error.response &&
+      error.response.errors &&
+      error.response.errors.length > 0
+    ) {
+      const errorMessage = await extractErrorMessage(error.response.errors[0]);
+      throw new Error(errorMessage);
     }
+    console.error(error)
+    throw new Error("Unbekannter Fehler beim Erstellen des Buchs.");
   }
-}
+};

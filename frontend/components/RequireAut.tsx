@@ -1,10 +1,12 @@
-
-
-'use client'
+"use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 
-export default function RequireAuth ({ children }) {
+type RequireAuthProps = {
+  children: ReactNode;
+};
+
+export default function RequireAuth({ children }: RequireAuthProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -15,4 +17,4 @@ export default function RequireAuth ({ children }) {
   }, [router]);
 
   return <>{children}</>;
-};
+}

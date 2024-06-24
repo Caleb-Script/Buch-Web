@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { EnumButtons } from "./ButtonGenerator/BuchFilterButtonGenerator";
 import { BuchArtEnum } from "../lib/enum";
-import { BooleanButtons } from "./filter/boolean";
-import { RatingButtons } from "./filter/number";
-import { TextInput } from "./filter/text";
+import { BooleanButtons } from "./ButtonGenerator/booleanButtonGenerator";
+import { RatingButtons } from "./ButtonGenerator/numberButtonGenerator";
+import { TextInput } from "./ButtonGenerator/textFieldGenerator";
 import { Suchkriterium } from "../lib/interfaces";
 
 export function BuchFilterButton() {

@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
-    message?: string;
+  message?: string;
 };
 
-export const LoadingComponent = ({message}) => {
+export const LoadingComponent: React.FC<Props> = ({ message }) => {
   const loadingText = message ?? "Wird geladen";
 
   return (

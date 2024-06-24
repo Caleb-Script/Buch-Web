@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import style from 'styled-jsx/style';
 
 export default function SeitenNummerierung({ anzahlSeiten }: { anzahlSeiten: number }) {
   const pathname = usePathname();
