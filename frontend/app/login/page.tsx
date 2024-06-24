@@ -6,7 +6,11 @@ import Head from "next/head";
 import FaceFrownIcon from "@heroicons/react/24/outline/FaceFrownIcon";
 
 export default function Home() {
-  const token = localStorage.getItem("token");
+  let token = null;
+
+  if (typeof window !== "undefined") {
+    token = localStorage.getItem("token");
+  }
 
   if (token) {
     return (
