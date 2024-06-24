@@ -39,7 +39,6 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
           buch.id,
           buch.version,
           token,
-          state,
           formData
         );
         if (result.message) {

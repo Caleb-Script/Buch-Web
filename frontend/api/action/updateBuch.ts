@@ -1,5 +1,5 @@
 import { SchlagwortTyp, BuchArtTyp } from "../../lib/typen";
-import { extractErrorMessage, State } from "../actions";
+import { extractErrorMessage } from "../actions";
 import { UPDATE_BUCH } from "../mutation/update";
 import { GraphQLClient } from "graphql-request";
 
@@ -7,7 +7,6 @@ export async function updateActionBuch(
   id: number,
   version: number,
   token: string | null,
-  prevState: State | null,
   formData: FormData,
   client: GraphQLClient
 ) {
@@ -83,7 +82,7 @@ export async function updateActionBuch(
     return {
       message: "Buch erfolgreich aktualisiert!",
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Fehler beim Ausführen der GraphQL-Anfrage:", error);
     if (
       error.response &&

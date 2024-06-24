@@ -33,7 +33,7 @@ export default function CreateBuchFormular() {
       form.classList.add("was-validated");
       try {
         const formData = new FormData(form);
-        const result = await createBuch(token, state, formData);
+        const result = await createBuch(token, formData);
         if (result.message) {
           setResponse(result.message);
           setTimeout(() => {

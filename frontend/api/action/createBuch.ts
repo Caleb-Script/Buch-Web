@@ -2,16 +2,16 @@
 
 import { GraphQLClient } from "graphql-request";
 import { BuchArtTyp, SchlagwortTyp } from "../../lib/typen";
-import { extractErrorMessage, State } from "../actions";
+import { extractErrorMessage } from "../actions";
 import { getAuth } from "../auth";
 import { CREATE_BUCH } from "../mutation/create";
 import { SchlagwortEnum } from "../../lib/enum";
+import { GraphQLError } from 'graphql';
 
 export const createActionBuch = async (
-  token: string | null,
-  prevState: State,
   formData: FormData,
-  client: GraphQLClient
+  client: GraphQLClient,
+  token: string | null
 ) => {
   const schlagwoerter: SchlagwortTyp[] = [];
   const schlagwoerterOptions = formData.getAll("schlagwoerter");
@@ -67,8 +67,7 @@ export const createActionBuch = async (
   const intRating = rating ? parseInt(rating) : 0;
 
   try {
-    const authToken = await getAuth("admin", "p");
-    client.setHeader("Authorization", `Bearer ${authToken}`);
+    client.setHeader("Authorization", `Bearer ${token}`);
 
     const data = await client.request<{ id: string }>(CREATE_BUCH, {
       isbn,
@@ -86,7 +85,7 @@ export const createActionBuch = async (
 
     console.log("GraphQL-Anfrage erfolgreich abgeschlossen:", data);
     return { message: `Buch ${titel} erfolgreich erstellt.` };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Fehler beim Ausführen der GraphQL-Anfrage:", error);
     if (
       error.response &&
