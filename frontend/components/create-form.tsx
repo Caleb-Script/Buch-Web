@@ -11,7 +11,7 @@ import { ErrorBannerComponent } from "./ErrorBannerComponent";
 import { useRouter } from "next/navigation.js";
 
 export default function CreateBuchFormular() {
-  const token = localStorage.getItem("token");
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const currentDate = new Date().toISOString().split("T")[0];
   const [isValid, setValid] = useState(false);
   const initialState = { errors: {}, message: "" };
@@ -52,6 +52,17 @@ export default function CreateBuchFormular() {
     }
   };
 
+  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const input = event.currentTarget;
+    if (!input.checkValidity()) {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+    } else {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+    }
+  };
+
   useEffect(() => {
     const form = document.getElementById("buchForm") as HTMLFormElement;
     const handleFormChange = () => {
@@ -74,7 +85,6 @@ export default function CreateBuchFormular() {
       id="buchForm"
       className="pt-4 px-2"
       noValidate
-      validated={true}
       onSubmit={handleSetValid}
     >
       <div className="rounded bg-body-tertiary px-4 py-1 pt-4">
@@ -93,9 +103,11 @@ export default function CreateBuchFormular() {
                 pattern="[A-Za-z]+"
                 minLength={3}
                 maxLength={20}
+                onBlur={handleInputBlur}
+                aria-describedby="titelFeedback"
               />
               <label htmlFor="titel">Titel</label>
-              <div className="invalid-feedback">
+              <div id="titelFeedback" className="invalid-feedback">
                 Gib einen gültigen Titel ein
               </div>
               <div className="valid-feedback">passt!</div>
@@ -112,9 +124,11 @@ export default function CreateBuchFormular() {
                 minLength={3}
                 maxLength={20}
                 required
+                onBlur={handleInputBlur}
+                aria-describedby="untertitelFeedback"
               />
               <label htmlFor="untertitel">Untertitel</label>
-              <div className="invalid-feedback">
+              <div id="untertitelFeedback" className="invalid-feedback">
                 Gib einen gültigen Untertitel ein
               </div>
               <div className="valid-feedback">passt!</div>
@@ -131,9 +145,11 @@ export default function CreateBuchFormular() {
               className="form-control"
               pattern="^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$"
               required
+              onBlur={handleInputBlur}
+              aria-describedby="isbnFeedback"
             />
             <label htmlFor="isbn">ISBN</label>
-            <div className="invalid-feedback">
+            <div id="isbnFeedback" className="invalid-feedback">
               Gib eine gültige ISBN Nummer ein z.B: 978-3-16-148410-0
             </div>
             <div className="valid-feedback">passt!</div>
@@ -150,9 +166,11 @@ export default function CreateBuchFormular() {
                 step={0.01}
                 min={0}
                 required
+                onBlur={handleInputBlur}
+                aria-describedby="preisFeedback"
               />
               <label htmlFor="preis">Preis</label>
-              <div className="invalid-feedback">
+              <div id="preisFeedback" className="invalid-feedback">
                 Gib einen gültigen Preis ein
               </div>
               <div className="valid-feedback">passt!</div>
@@ -169,9 +187,11 @@ export default function CreateBuchFormular() {
                 min={0}
                 max={100}
                 required
+                onBlur={handleInputBlur}
+                aria-describedby="rabattFeedback"
               />
               <label htmlFor="rabatt">Rabatt</label>
-              <div className="invalid-feedback">
+              <div id="rabattFeedback" className="invalid-feedback">
                 Gib einen gültigen Rabatt ein
               </div>
               <div className="valid-feedback">passt!</div>
@@ -185,9 +205,11 @@ export default function CreateBuchFormular() {
                 name="datum"
                 required
                 max={currentDate}
+                onBlur={handleInputBlur}
+                aria-describedby="datumFeedback"
               />
               <label htmlFor="datum">Erscheinungsdatum</label>
-              <div className="invalid-feedback">Gib ein gültiges Datum ein</div>
+              <div id="datumFeedback" className="invalid-feedback">Gib ein gültiges Datum ein</div>
               <div className="valid-feedback">passt!</div>
             </div>
 
@@ -200,9 +222,11 @@ export default function CreateBuchFormular() {
                 placeholder="Homepage"
                 pattern="^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
                 required
+                onBlur={handleInputBlur}
+                aria-describedby="homepageFeedback"
               />
               <label htmlFor="homepage">Homepage</label>
-              <div className="invalid-feedback">Gib eine gültige URL ein</div>
+              <div id="homepageFeedback" className="invalid-feedback">Gib eine gültige URL ein</div>
               <div className="valid-feedback">passt!</div>
             </div>
           </div>
@@ -216,6 +240,8 @@ export default function CreateBuchFormular() {
               className="form-select"
               aria-label="buchart Select-feld"
               required
+              onBlur={handleInputBlur}
+              aria-describedby="buchartFeedback"
             >
               <option value="" disabled hidden>
                 Buchart
@@ -223,8 +249,9 @@ export default function CreateBuchFormular() {
               <option value={BuchArtEnum.KINDLE}>Kindle</option>
               <option value={BuchArtEnum.DRUCKAUSGABE}>Druckausgabe</option>
             </select>
-            <label htmlFor="floatingSelectDisabled">Buchart</label>
-            <div className="invalid-feedback">
+            <label htmlFor="floatingSelectDisabled">
+    Buchart</label>
+            <div id="buchartFeedback" className="invalid-feedback">
               Wähle eine gültige Buchart aus
             </div>
             <div className="valid-feedback">passt!</div>
@@ -249,8 +276,7 @@ export default function CreateBuchFormular() {
           <legend>Schlagwörter</legend>
           <div className="">
             <div className="form-floating">
-              <EnumButtons
-                enumTyp={SchlagwortEnum}
+              <EnumButtons enumTyp={SchlagwortEnum}
                 name={"schlagwoerter"}
                 selectedValues={[]}
               />

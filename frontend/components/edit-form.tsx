@@ -77,6 +77,19 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
     };
   }, []);
 
+  const handleInputBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const input = event.currentTarget;
+    if (!input.checkValidity()) {
+      input.classList.add("is-invalid");
+      input.classList.remove("is-valid");
+    } else {
+      input.classList.remove("is-invalid");
+      input.classList.add("is-valid");
+    }
+  };
+
   return (
     <Form
       id="buchForm"
@@ -100,9 +113,11 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
               defaultValue={buch.isbn}
               pattern="^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$"
               required
+              onBlur={handleInputBlur}
+              aria-describedby="isbnFeedback"
             />
             <label htmlFor="isbn">ISBN</label>
-            <div className="invalid-feedback">
+            <div id="isbnFeedback" className="invalid-feedback">
               Gib eine gültige ISBN Nummer ein
             </div>
             <div className="valid-feedback">passt!</div>
@@ -118,11 +133,13 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
               className="form-control"
               defaultValue={buch.preis}
               required
+              onBlur={handleInputBlur}
+              aria-describedby="preisFeedback"
             />
             <span className="input-group-text">€</span>
             <label htmlFor="preis">Preis</label>
-            <div className="invalid-feedback">
-              Gib eine gültige ISBN Nummer ein
+            <div id="preisFeedback" className="invalid-feedback">
+              Gib einen gültigen Preis ein
             </div>
             <div className="valid-feedback">passt!</div>
           </div>
@@ -137,11 +154,13 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
               step="0.01"
               defaultValue={rabattNumber}
               required
+              onBlur={handleInputBlur}
+              aria-describedby="rabattFeedback"
             />
             <span className="input-group-text">%</span>
             <label htmlFor="rabatt">Rabatt</label>
-            <div className="invalid-feedback">
-              Gib eine gültige ISBN Nummer ein
+            <div id="rabattFeedback" className="invalid-feedback">
+              Gib einen gültigen Rabatt ein
             </div>
             <div className="valid-feedback">passt!</div>
           </div>
@@ -155,9 +174,12 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
               name="homepage"
               defaultValue={buch.homepage}
               required
+              onBlur={handleInputBlur}
+              aria-describedby="homepageFeedback"
             />
-            <div className="invalid-feedback">
-              Gib eine gültige ISBN Nummer ein
+            <label htmlFor="homepage">Homepage</label>
+            <div id="homepageFeedback" className="invalid-feedback">
+              Gib eine gültige Homepage-URL ein
             </div>
             <div className="valid-feedback">passt!</div>
           </div>
@@ -176,6 +198,7 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
             name="rating"
             defaultValue={buch.rating}
             required
+            onBlur={handleInputBlur}
           ></input>
 
           {/* Select buttons */}
@@ -187,6 +210,7 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
                 className="form-select"
                 aria-label="buchart"
                 defaultValue={buch.art}
+                onBlur={handleInputBlur}
               >
                 <option value={BuchArtEnum.KINDLE}>Kindle</option>
                 <option value={BuchArtEnum.DRUCKAUSGABE}>Druckausgabe</option>
@@ -214,7 +238,7 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
                 defaultChecked={buch.lieferbar}
               />
               <label className="btn btn-outline-danger" htmlFor="lieferbar">
-                lieferbar?
+                Lieferbar?
               </label>
             </div>
           </div>
@@ -233,7 +257,7 @@ export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
       </div>
       {response ? (
         <div className="alert alert-success" role="alert">
-          Buch: {response} wurde erfolgreich angelegt!
+          Buch: {response} wurde erfolgreich aktualisiert!
         </div>
       ) : null}
       {error ? (

@@ -32,14 +32,11 @@ export default function LoginForm() {
     setIsLoading(true);
     setError(undefined);
 
-    console.log(loginDaten);
-
     try {
       const { username, password } = loginDaten;
       const token = await getAuth(username, password);
       localStorage.setItem("token", token);
       localStorage.setItem("user", username);
-      console.log("Token: ", token);
       router.push("/buecher")
     } catch (err) {
       setError((err as Error).message);
