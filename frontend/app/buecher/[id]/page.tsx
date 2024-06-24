@@ -1,5 +1,5 @@
 import { fetchBuchById } from "../../../api/buch";
-import Breadcrumbs from "../../../components/breadcrumbs";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 import BuchDetailClient from "../../../components/BuchDetail";
 
 export default async function Home({ params }: { params: { id: string } }) {

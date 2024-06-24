@@ -1,4 +1,4 @@
-import SideNav from "@/components/sidenav";
+import SideNav from "../../components/Sidenav";
 import BootstrapClient from "@/components/BootstrapClient";
 import RequireAuth from "../../components/RequireAut";
 

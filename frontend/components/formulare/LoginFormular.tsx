@@ -1,12 +1,11 @@
 // src/components/Login.tsx
 "use client";
-import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { LoginDaten } from "../lib/interfaces";
-import { LoadingComponent } from "./LoadingComponent";
-import { ErrorBannerComponent } from "./ErrorBannerComponent";
+import { LoginDaten } from "../../lib/interfaces";
+import { LoadingComponent } from "../LoadingComponent";
+import { ErrorBannerComponent } from "../ErrorBannerComponent";
 import { useRouter } from "next/navigation";
-import { getAuth } from "../api/auth";
+import { getAuth } from "../../api/auth";
 
 
 

@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { deleteBuch } from "../api/actions";
+import { deleteBuch } from "../../api/actions";
 import { useRouter } from "next/navigation";
 //import { useDebouncedCallback } from "use-debounce";
 

@@ -3,7 +3,7 @@ import { Suchkriterium } from "@/lib/interfaces";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { SchlagwortEnum } from "../lib/enum";
+import { SchlagwortEnum } from "../../lib/enum";
 
 export function EnumButtons({
   enumTyp,

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Buch } from "../lib/klassen";
-import { UpdateBuchButton, DeleteBuchButton } from "./buch/buttons";
+import { UpdateBuchButton, DeleteBuchButton } from "./buch/Buttons";
 import { RatingComponent } from "./RatingComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faBookOpen, faBookOpenReader } from "@fortawesome/free-solid-svg-icons";

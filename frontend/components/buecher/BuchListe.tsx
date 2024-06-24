@@ -1,12 +1,8 @@
 "use client";
 
-import {
-  DeleteBuchButton,
-  InspectBuchButton,
-  UpdateBuchButton,
-} from "../components/buttons";
 import { useEffect, useState } from "react";
-import { Buch } from "../lib/klassen.js";
+import { Buch } from "../../lib/klassen.js";
+import { DeleteBuchButton, InspectBuchButton, UpdateBuchButton } from "./Buttons";
 
 function schlagwoerterExist(
   schlagwoerter: string[] | undefined | null

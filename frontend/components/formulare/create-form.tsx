@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/button";
+
 import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import EnumButtons from "@/components/enumButtonGenerator";
-import { createBuch } from "../api/actions";
-import { BuchArtEnum, SchlagwortEnum } from "../lib/enum";
-import { ErrorBannerComponent } from "./ErrorBannerComponent";
+import EnumButtons from "@/components/ButtonGenerator/enumButtonGenerator";
+import { createBuch } from "../../api/actions";
+import { BuchArtEnum, SchlagwortEnum } from "../../lib/enum";
+import { ErrorBannerComponent } from "../ErrorBannerComponent";
 import { useRouter } from "next/navigation.js";
+import { Button } from "../button/button";
 
 export default function CreateBuchFormular() {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;

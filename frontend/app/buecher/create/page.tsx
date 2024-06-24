@@ -1,8 +1,8 @@
 'use server'
 
 import { Form } from "react-bootstrap";
-import Breadcrumbs from "../../../components/breadcrumbs";
-import CreateCustomerFormular from "../../../components/create-form";
+import Breadcrumbs from "../../../components/Breadcrumbs";
+import CreateCustomerFormular from "../../../components/formulare/create-form";
 
 
 

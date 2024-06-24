@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "./button";
+import { Button } from "../button/button";
 import { BuchFormular } from "@/lib/formulare";
-import { BuchArtEnum, SchlagwortEnum } from "../lib/enum";
-import EnumButtons from "@/components/enumButtonGenerator";
+import { BuchArtEnum, SchlagwortEnum } from "../../lib/enum";
+import EnumButtons from "@/components/ButtonGenerator/enumButtonGenerator";
 import { Form } from "react-bootstrap";
-import { updateBuch } from "../api/actions";
+import { updateBuch } from "../../api/actions";
 import { useRouter } from "next/navigation.js";
-import { ErrorBannerComponent } from "./ErrorBannerComponent";
+import { ErrorBannerComponent } from "../ErrorBannerComponent";
 
 export default function UpdateBuchFormular({ buch }: { buch: BuchFormular }) {
   const [state, setState] = useState({ message: "", errors: {} });

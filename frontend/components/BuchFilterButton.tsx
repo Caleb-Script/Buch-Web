@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { EnumButtons } from "./filter-button";
+import { EnumButtons } from "./ButtonGenerator/BuchFilterButtonGenerator";
 import { BuchArtEnum } from "../lib/enum";
 import { BooleanButtons } from "./filter/boolean";
 import { RatingButtons } from "./filter/number";
 import { TextInput } from "./filter/text";
-import { Suchkriterium } from "../lib/interfaces.js";
+import { Suchkriterium } from "../lib/interfaces";
 
-export function FilterBuecherButton() {
+export function BuchFilterButton() {
     const [selectedValues, setSelectedValues] = useState<Suchkriterium[]>([]);
     const searchParams = useSearchParams();
     const pathname = usePathname();

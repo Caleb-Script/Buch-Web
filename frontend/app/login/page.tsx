@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link.js";
-import Login from "../../components/LoginForm";
-import Head from "next/head";
+import LoginFormular from "../../components/formulare/LoginFormular";
 import FaceFrownIcon from "@heroicons/react/24/outline/FaceFrownIcon";
 
 export default function Home() {
@@ -30,7 +29,7 @@ export default function Home() {
 
     return (
       <main className="vh-100 d-flex justify-content-center align-items-center">
-        <Login />
+        <LoginFormular />
       </main>
     );
   }
