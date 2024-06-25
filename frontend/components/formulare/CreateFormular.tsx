@@ -197,7 +197,7 @@ export default function CreateBuchFormular() {
                         </label>
                     </div>
 
-                    <fieldset className="pb-2 d-flex justify-content-center">
+                    <fieldset className="d-flex justify-content-center">
                         <legend className="d-flex justify-content-center">
                             Schlagwörter
                         </legend>

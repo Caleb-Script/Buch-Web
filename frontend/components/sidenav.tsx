@@ -101,7 +101,7 @@ export default function SideNav({
                                               localStorage.removeItem("token");
                                               localStorage.removeItem("user");
                                           }
-                                          signOut();
+                                          //signOut();
                                       }}
                                       href={"/"}
                                   >
