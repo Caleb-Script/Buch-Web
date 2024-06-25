@@ -34,7 +34,8 @@ export default function LoginForm() {
     try {
       const { username, password } = loginDaten;
       const token = await getAuth(username, password);
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", token.access_token);
+      localStorage.setItem("refreshToken", token.refresh_token);
       localStorage.setItem("user", username);
       router.push("/buecher")
     } catch (err) {
