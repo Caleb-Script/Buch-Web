@@ -2,9 +2,9 @@
 
 import { GraphQLClient } from "graphql-request";
 import { BuchArtTyp, SchlagwortTyp } from "../../lib/typen";
-import { extractErrorMessage } from "../actions";
 import { CREATE_BUCH } from "../mutation/create";
 import { SchlagwortEnum } from "../../lib/enum";
+import { extractErrorMessage } from "../graphqlError";
 
 export const createActionBuch = async (
     formData: FormData,

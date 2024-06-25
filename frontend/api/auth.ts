@@ -15,6 +15,7 @@ const AUTH = gql`
         login(username: $username, password: $password) {
             access_token
             refresh_token
+            expires_in
         }
     }
 `;
@@ -24,6 +25,7 @@ const REFRESH_TOKEN = gql`
         refresh(refresh_token: $refresh_token) {
             access_token
             refresh_token
+            expires_in
         }
     }
 `;
@@ -67,7 +69,8 @@ export async function refreshToken() {
 
     console.log(data.refresh);
     localStorage.setItem("token", data.refresh.access_token);
-    localStorage.setItem("refreshToken", data.refresh.refresh_token);
+      localStorage.setItem("refreshToken", data.refresh.refresh_token);
+      localStorage.setItem("expires_in", data.refresh.expires_in);
     return data.refresh;
   } catch (error: any) {
     console.error("Fehler beim Ausführen der GraphQL-Anfrage:", error);

@@ -3,29 +3,10 @@
 import Link from "next/link";
 import LoginFormular from "../../components/formulare/LoginFormular";
 import FaceFrownIcon from "@heroicons/react/24/outline/FaceFrownIcon";
-import { useState, useEffect } from "react";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
-function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
-    return (
-        <div role="alert">
-            <p>Etwas ist schief gelaufen:</p>
-            <pre>{error.message}</pre>
-            <button onClick={resetErrorBoundary}>
-                Versuchen Sie es erneut
-            </button>
-        </div>
-    );
-}
-
-function HomeContent() {
-    const [token, setToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        // This will only run on the client
-        const storedToken = localStorage.getItem("token");
-        setToken(storedToken);
-    }, []);
+export default function Home() {
+    const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     if (token) {
         return (
@@ -37,7 +18,7 @@ function HomeContent() {
                     href="/buecher"
                     className="mt-4 rounded bg-danger px-4 py-2 text-sm text-white"
                 >
-                    Go Back
+                    Zurück zu den Büchern
                 </Link>
             </main>
         );
@@ -48,17 +29,4 @@ function HomeContent() {
             </main>
         );
     }
-}
-
-export default function Home() {
-    return (
-        <ErrorBoundary
-            FallbackComponent={ErrorFallback}
-            onReset={() => {
-                // Reset the state of your application if needed
-            }}
-        >
-            <HomeContent />
-        </ErrorBoundary>
-    );
 }
