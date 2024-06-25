@@ -3,6 +3,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import dotenv from "dotenv";
 import { extractErrorMessage } from "./actions";
 import { Token } from "../lib/interfaces.js";
+import { redirect } from "next/navigation.js";
 
 dotenv.config();
 const client = new GraphQLClient(
@@ -72,7 +73,12 @@ export async function refreshToken() {
     console.error("Fehler beim Ausführen der GraphQL-Anfrage:", error);
     if (error.response?.errors?.length > 0) {
       const errorMessage = await extractErrorMessage(error.response.errors[0]);
-      throw new Error(errorMessage);
+        alert(errorMessage);
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+        }
+        redirect("/");
     }
     alert("Unbekannter Fehler beim Aktualisieren des Tokens");
     throw new Error("Unbekannter Fehler beim Aktualisieren des Tokens");

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /*
  * Copyright (C) 2016 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -99,7 +98,7 @@ export class QueryBuilder {
     // z.B. { titel: 'a', rating: 5, javascript: true }
     // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
     // eslint-disable-next-line max-lines-per-function, sonarjs/cognitive-complexity, max-statements
-    build({ titel, javascript, typescript, ...props }: Suchkriterien) {
+    build({ titel, javascript, typescript, isbn, ...props }: Suchkriterien) {
         this.#logger.debug(
             'build: titel=%s, javascript=%s, typescript=%s, props=%o',
             titel,
@@ -173,6 +172,16 @@ export class QueryBuilder {
                       );
                 useWhere = false;
             }
+        }
+
+        if (isbn !== undefined && typeof isbn === 'string') {
+            const ilike =
+                typeOrmModuleOptions.type === 'postgres' ? 'ilike' : 'like';
+            queryBuilder = queryBuilder.where(
+                `${this.#buchAlias}.isbn ${ilike} :isbn`,
+                { isbn: `%${isbn}%` },
+            );
+            useWhere = false;
         }
 
         // eslint-disable-next-line sonarjs/no-collapsible-if
