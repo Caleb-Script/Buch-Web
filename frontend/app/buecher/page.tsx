@@ -1,4 +1,4 @@
-import BuecherListe from "./table";
+import BuecherTabelle from "./table";
 import { CreateBuecherButton } from "../../components/buecher/Buttons";
 import { Suspense } from "react";
 import SeitenNummerierung from "@/components/Pagination";
@@ -31,7 +31,7 @@ export default async function Buecher({
         <CreateBuecherButton />
       </div>
       <Suspense fallback={<BuchTabelleSkelet />} key={titel + currentPage}>
-        <BuecherListe titel={titel} filter={filter} page={currentPage} />
+        <BuecherTabelle titel={titel} filter={filter} page={currentPage} />
       </Suspense>
       <div className="d-flex w-100 justify-content-center">
         <SeitenNummerierung anzahlSeiten={anzahlSeiten} />

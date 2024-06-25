@@ -1,5 +1,5 @@
 import { SchlagwortTyp, BuchArtTyp } from "../../lib/typen";
-import { extractErrorMessage } from "../actions";
+import { extractErrorMessage } from "../graphqlError";
 import { UPDATE_BUCH } from "../mutation/update";
 import { GraphQLClient } from "graphql-request";
 

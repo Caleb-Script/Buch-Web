@@ -23,8 +23,6 @@ export function DeleteBuchButton({ id }: { id: number }) {
     } catch (error) {
       console.error(`Fehler beim Löschen des Buchs mit ID ${id}:`, error);
         setIsDeleting(false);
-        //TODO Fehlermeldung zeigen
-      // Hier kannst du eine Fehlermeldung anzeigen oder andere Fehlerbehandlung durchführen
     }
   };
 

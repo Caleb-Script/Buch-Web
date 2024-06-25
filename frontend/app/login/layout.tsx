@@ -5,8 +5,8 @@ import RequireAuth from "../../components/RequireAut";
 
 
 export const metadata = {
-    title: "Bücherverwaltung",
-    description: "Bücherverwaltungssystem",
+    title: "Login",
+    description: "Anmelden",
 };
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

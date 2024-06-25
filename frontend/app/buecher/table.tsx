@@ -4,7 +4,7 @@ import { fetchBuecherTabelle } from "@/api/tabellen";
 import { Suchkriterien } from "@/lib/suchkriterien";
 import BuchListeClient from "../../components/buecher/BuchListe";
 
-export default async function BuchListeServer({
+export default async function BuecherTabelle({
   titel,
   page,
   filter,

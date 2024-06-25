@@ -1,9 +1,9 @@
 import { gql, GraphQLClient } from "graphql-request";
 import { unstable_noStore as noStore } from "next/cache";
 import dotenv from "dotenv";
-import { extractErrorMessage } from "./actions";
-import { Token } from "../lib/interfaces.js";
-import { redirect } from "next/navigation.js";
+import { Token } from "../lib/interfaces";
+import { redirect } from "next/navigation";
+import { extractErrorMessage } from "./graphqlError";
 
 dotenv.config();
 const client = new GraphQLClient(
