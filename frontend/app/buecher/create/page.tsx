@@ -6,7 +6,7 @@ import CreateCustomerFormular from "../../../components/formulare/CreateFormular
 
 
 
-export default async function Page() {
+export default async function AnlegeFormular() {
 
   return (
     <main>
