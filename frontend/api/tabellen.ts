@@ -3,6 +3,9 @@ import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { Buch } from "@/lib/klassen";
 import { Suchkriterien } from "../lib/suchkriterien";
 import { BUECHER_TABELLE } from "./query/query";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const client = new GraphQLClient(
   process.env.BACKEND_SERVER_URL || "https://localhost:3000/graphql"
@@ -10,7 +13,10 @@ const client = new GraphQLClient(
 
 
   
-const BUECHER_PRO_SEITE = 6;
+let BUECHER_PRO_SEITE: number;
+if (process.env.BUECHER_PRO_SEITE) {
+  BUECHER_PRO_SEITE = parseInt(process.env.BUECHER_PRO_SEITE);
+}
 
 export async function fetchBuecherTabelleSeiten(
   query: string = "",

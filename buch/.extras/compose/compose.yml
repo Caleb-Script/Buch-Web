@@ -41,7 +41,7 @@ include:
 # https://docs.docker.com/compose/compose-file/05-services
 services:
   buch:
-    image: juergenzimmermann/buch:2024.04.0-bookworm
+    image: calebgyamfi/buch:2024.04.0
     depends_on:
       db:
         condition: service_healthy
@@ -61,10 +61,10 @@ services:
         source: ../../src/config/resources/tls/key.pem
         target: /opt/app/dist/config/resources/tls/key.pem
         read_only: true
-      - type: bind
-        source: ../../src/config/resources/jwt/private-key.pem
-        target: /opt/app/dist/config/resources/jwt/private-key.pem
-        read_only: true
+      # - type: bind
+      #   source: ../../src/config/resources/jwt/private-key.pem
+      #   target: /opt/app/dist/config/resources/jwt/private-key.pem
+      #   read_only: true
       - type: bind
         source: ../../src/config/resources/db/sqlite/buch.sqlite
         target: /opt/app/dist/config/resources/db/sqlite/buch.sqlite

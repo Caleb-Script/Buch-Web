@@ -1,4 +1,12 @@
 import "./styles.css";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+let BUECHER_PRO_SEITE: number;
+if (process.env.BUECHER_PRO_SEITE) {
+  BUECHER_PRO_SEITE = parseInt(process.env.BUECHER_PRO_SEITE);
+}
 
 export async function BuchTabelleSkelet() {
   return (
@@ -15,12 +23,9 @@ export async function BuchTabelleSkelet() {
           </tr>
         </thead>
         <tbody>
-          <TableRowSkelet />
-          <TableRowSkelet />
-          <TableRowSkelet />
-          <TableRowSkelet />
-          <TableRowSkelet />
-          <TableRowSkelet />
+          {Array.from({ length: BUECHER_PRO_SEITE }).map((_, index) => (
+            <TableRowSkelet key={index} />
+          ))}
         </tbody>
       </table>
     </main>
